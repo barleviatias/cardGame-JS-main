@@ -1,0 +1,201 @@
+* {
+  box-sizing: none;
+}
+
+body {
+  max-height:100vh;
+  overflow: hidden;
+  background-image: url("../images/abstract-blur-empty-green-gradient-studio-well-use-as-backgroundwebsite-templateframebusiness-report.jpg");
+}
+
+h2 {
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  color: #FFFFFF;
+  font-size: 36px;
+  padding: 15px;
+  text-align: center;
+  /* background: #FFFFFF; */
+  /* text-shadow: 2px 2px 0 #4074b5, 2px -2px 0 #4074b5, -2px 2px 0 #4074b5, -2px -2px 0 #4074b5, 2px 0px 0 #4074b5, 0px 2px 0 #4074b5, -2px 0px 0 #4074b5, 0px -2px 0 #4074b5; */
+}
+
+.login {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100vw;
+  flex-direction: column;
+}
+
+.player1 {
+  /* background-color: rgb(169, 255, 255,0.20); */
+  height: 30vh;
+  /* display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 10px; */
+}
+
+.kupa {
+  /* background-color: rgb(184, 184, 239); */
+  height: 35vh;
+  display: flex;
+  /* margin: 10px; */
+  /* padding: 10px; */
+  /* flex-direction: column; */
+  justify-content: center;
+  align-items: center;
+  /* padding: 20px; */
+}
+
+.player2 {
+  /* background-color: rgb(169, 255, 255); */
+  /* background-color: rgb(249, 232, 200 */
+  height: 30vh;
+}
+
+.deck {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+}
+
+.card {
+  /* display: inline; */
+  /* padding: 5px; */
+  /* width: 100px;*/
+  height: 150px;
+  /* background-color: white; */
+  /* text-align: center; */
+  /* z-index: 999; */
+}
+
+.card:hover {
+  animation: bounce;
+  animation-duration: 0.9s;
+  /* margin-top: -40px; */
+}
+
+img {
+  /* position: relative; */
+  /* z-index: 999; */
+  background-color: white;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  /* width: 100px; */
+  height: 9rem;
+  /* padding: 50px; */
+}
+
+button {
+  margin: 20px;
+  background-color: #c2fbd7;
+  border-radius: 100px;
+  box-shadow: rgba(44, 187, 99, .2) 0 -25px 18px -14px inset, rgba(44, 187, 99, .15) 0 1px 2px, rgba(44, 187, 99, .15) 0 2px 4px, rgba(44, 187, 99, .15) 0 4px 8px, rgba(44, 187, 99, .15) 0 8px 16px, rgba(44, 187, 99, .15) 0 16px 32px;
+  color: green;
+  cursor: pointer;
+  display: inline-block;
+  font-family: CerebriSans-Regular, -apple-system, system-ui, Roboto, sans-serif;
+  padding: 7px 20px;
+  text-align: center;
+  text-decoration: none;
+  transition: all 250ms;
+  border: 0;
+  font-size: 16px;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+button:hover {
+  box-shadow: rgba(44, 187, 99, .35) 0 -25px 18px -14px inset, rgba(44, 187, 99, .25) 0 1px 2px, rgba(44, 187, 99, .25) 0 2px 4px, rgba(44, 187, 99, .25) 0 4px 8px, rgba(44, 187, 99, .25) 0 8px 16px, rgba(44, 187, 99, .25) 0 16px 32px;
+  transform: scale(1.05) rotate(-1deg);
+}
+
+
+/* CSS */
+.button-85 {
+  padding: 0.6em 2em;
+  border: none;
+  outline: none;
+  color: rgb(255, 255, 255);
+  background: #111;
+  cursor: pointer;
+  position: relative;
+  z-index: 0;
+  border-radius: 10px;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+.button-85:before {
+  content: "";
+  background: linear-gradient(45deg,
+      #ff0000,
+      #ff7300,
+      #fffb00,
+      #48ff00,
+      #00ffd5,
+      #002bff,
+      #7a00ff,
+      #ff00c8,
+      #ff0000);
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  background-size: 400%;
+  z-index: -1;
+  filter: blur(5px);
+  -webkit-filter: blur(5px);
+  width: calc(100% + 4px);
+  height: calc(100% + 4px);
+  animation: glowing-button-85 20s linear infinite;
+  transition: opacity 0.3s ease-in-out;
+  border-radius: 10px;
+}
+
+@keyframes glowing-button-85 {
+  0% {
+    background-position: 0 0;
+  }
+
+  50% {
+    background-position: 400% 0;
+  }
+
+  100% {
+    background-position: 0 0;
+  }
+}
+
+.button-85:after {
+  z-index: -1;
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: #222;
+  left: 0;
+  top: 0;
+  border-radius: 10px;
+}
+
+.css-input {
+  border-color: #cccccc;
+  border-style: solid;
+  font-size: 25px;
+  border-radius: 30px;
+  border-width: 2px;
+  padding: 10px;
+  box-shadow: 0px 0px 5px 0px rgba(42, 42, 42, .75);
+  font-family: sans-serif;
+  font-weight: bold;
+  text-align: center;
+}
+
+.css-input:focus {
+  outline: none;
+}
