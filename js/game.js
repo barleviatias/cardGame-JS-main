@@ -225,7 +225,9 @@ function drawCardPC() {
 		shuffle(deck);
 	}
 	else if (pc.isTurn && pc.deck.length === 13) {
-		pc.deck.push(deck.pop());
+		let card=deck.pop();
+		pc.collections[card.suit]++;
+		pc.deck.push(card);
 	}
 	renderBoard();
 }
