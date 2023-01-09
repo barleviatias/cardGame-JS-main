@@ -108,18 +108,6 @@ function cardClick(elcard) {
 			pc.isTurn = true;
 		}
 	}
-	
-		console.log("pc is turn");
-		// console.log('player 2');
-		// index = pc.deck.findIndex(
-			// 	(i) => i.value === cardToRemove.value && i.suit === cardToRemove.suit
-			// );
-			// // Remove the card from the deck
-		// console.log(index);
-		// if (index !== -1) {
-			// 	pc.deck.splice(index, 1);
-		// 	trashStack.push(cardToRemove);
-		// 	kupa_card = trashStack[trashStack.length - 1];
 		renderBoard();
 		setTimeout(() => {
 			// drawCardFromPile();
@@ -134,6 +122,9 @@ function cardClick(elcard) {
 		// }
 		// pcBot();
 	
+}
+function removeCard(player){
+
 }
 function findMaxCollectionSigns(collections) {
 	let maxCollection = 0;
@@ -151,45 +142,38 @@ function findMaxCollectionSigns(collections) {
 
   function findMinCollectionSigns(pc) {
 	let minCollection = 14;
-	let maxCollectionSigns = [];
+	let minCollectionSigns = [];
 	let weekCards=[];
 	for (const suit in pc.collections) {
 	  if (pc.collections[suit] < minCollection &&pc.collections[suit]!==0) {
 		minCollection = pc.collections[suit];
-		maxCollectionSigns = [suit];
+		minCollectionSigns = [suit];
 	  } else if (pc.collections[suit] === minCollection&&pc.collections[suit]!==0) {
-		maxCollectionSigns.push(suit);
+		minCollectionSigns.push(suit);
 	  }
 	}
-	console.log("low cards sign "+maxCollectionSigns);
+	// find temp array of week cards that are optional to drop
 	for( const card of pc.deck ){
-		for(let suit of maxCollectionSigns){
-			// console.log(card);
-			// console.log(suit);
+		for(let suit of minCollectionSigns){
 			if (card.suit==suit)
 			weekCards.push(card);
 		}
 	}
+	// random card from the week cards array
 	let indexToRemove=Math.floor(Math.random() * weekCards.length);
-	console.log(indexToRemove);
-	console.log(weekCards);
 	let cardToRemove=weekCards[indexToRemove];
 	index = pc.deck.findIndex(
 		(i) => i.value === cardToRemove.value && i.suit === cardToRemove.suit
 	);
-	console.log(index);
 	if (index !== -1) {
-			pc.deck.splice(index, 1);
-			console.log("remove card");
-			console.log(weekCards[indexToRemove]);
+			pc.deck.splice(index, 1);;
+			// console.log(weekCards[indexToRemove]);
 			pc.collections[cardToRemove.suit]--;
 			trashStack.push(weekCards[indexToRemove]);
 			kupa_card = trashStack[trashStack.length - 1];
 			CheckWin(pc);
 			player1.isTurn = true;
 			pc.isTurn = false;
-	// console.log(pc.collections);
-	// return maxCollectionSigns;
   }
 }
 
@@ -207,13 +191,8 @@ function pcBot(){
 		}
 
 	}
+	drawCardPC();
 		console.log("pc draw");
-		// setTimeout(() => {
-		// 	drawCard();
-		// 	console.log("Delayed for 5 second.");
-		//   }, 5000)
-		
-		// drawCard();
 		setTimeout(() => {
 			// drawCardFromPile();
 			findMinCollectionSigns(pc);
@@ -234,7 +213,18 @@ function drawCard() {
 	if (player1.isTurn && player1.deck.length === 13) {
 		player1.deck.push(deck.pop());
 		// renderBoard();
-	} else if (pc.isTurn && pc.deck.length === 13) {
+		renderBoard();
+}
+}
+function drawCardPC() {
+	console.log('pc card draw');
+	if (deck.length === 0) {
+		// kupa_card=trashStack.pop();
+		deck = trashStack;
+		trashStack = [];
+		shuffle(deck);
+	}
+	else if (pc.isTurn && pc.deck.length === 13) {
 		pc.deck.push(deck.pop());
 	}
 	renderBoard();
@@ -286,6 +276,10 @@ function startGame() {
 			deck.push({ value, suit });
 		}
 	}
+	deck.push({ value:0, suit:"red" } );
+	deck.push({ value:0, suit:"black" } );
+	console.log(deck);
+	// deck.push({ 'joker', 'black' });
 	shuffle(deck);
 	kupa_card = deck.pop();
 	trashStack.push(kupa_card);
