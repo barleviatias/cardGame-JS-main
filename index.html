@@ -15,11 +15,12 @@
 		<input type="text" name="" class="css-input" id="name">
 		<button class="btn" onclick="startGame()">Let's Play</button>
 	</div>
-	<div class="container">
-		<div class="player1 deck"></div>
+	<div class="container" visabilit>
+		<div class="player deck"></div>
 		<div class="kupa">
 			<div onclick="drawCard()" class="drawCard"></div>
 			<h2 class="turn"></h2>
+			<button class="reset" onclick="reset()">reset</button>
 			<div class=" kupa_card"></div>
 		</div>
 		<div class="pc deck"></div>

@@ -27,8 +27,10 @@ h2 {
   width: 100vw;
   flex-direction: column;
 }
-
-.player1 {
+.container{
+  visibility: hidden;
+}
+.player {
   /* background-color: rgb(169, 255, 255,0.20); */
   height: 30vh;
   /* display: flex;
@@ -49,12 +51,15 @@ h2 {
   /* padding: 20px; */
 }
 
-.player2 {
+.pc {
   /* background-color: rgb(169, 255, 255); */
   /* background-color: rgb(249, 232, 200 */
   height: 30vh;
 }
-
+.reset{
+  position: fixed;
+  margin-top: 150px;
+}
 .deck {
   display: flex;
   flex-wrap: wrap;
