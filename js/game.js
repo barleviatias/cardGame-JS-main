@@ -23,6 +23,20 @@ var game = {
 	deck: [],
 };
 
+// loadSelectSave();
+function loadSelectSave() {
+	let selectElement = document.createElement('select');
+	let optionElement = document.createElement('option');
+	optionElement.innerText = 'Select';
+	selectElement.appendChild(optionElement);
+	for (let i = 0; i < localStorage.length; i++) {
+		let optionElement = document.createElement('option');
+		optionElement.innerText = localStorage.key(i);
+		selectElement.appendChild(optionElement);
+		// console.log(localStorage.key(i));
+	}
+	document.querySelector(".login").appendChild(selectElement);
+}
 function dealCards() {
 	game.player.deck = [];
 	game.pc.deck = [];
@@ -44,7 +58,7 @@ function createCardHTML(rank, suit, isClick) {
 function renderBoard() {
 	let htmlDeck1 = '';
 	let htmlDeck2 = '';
-	let htmlTurn = game.player.name + ' playing 👆🏻';
+	let htmlTurn = game.player.name + ' playing 👇🏻';
 	game.player.deck.sort(compareCards);
 	game.pc.deck.sort(compareCards);
 	for (const card of game.player.deck) {
@@ -54,7 +68,7 @@ function renderBoard() {
 		htmlDeck2 += createCardHTML(card.value, card.suit, false);
 	}
 	if (!game.player.isTurn) {
-		htmlTurn = game.pc.name + ' playing 👇🏻';
+		htmlTurn = game.pc.name + ' playing 👆🏻';
 		document.querySelector('.pc').style.backgroundColor =
 			'rgb(169, 255, 255,0.20)';
 		document.querySelector('.player').style.backgroundColor =
@@ -80,11 +94,9 @@ function renderBoard() {
 	document.querySelector('.player').innerHTML = htmlDeck1;
 	document.querySelector('.pc').innerHTML = htmlDeck2;
 
-	console.log(game);
 	saveGame(game.player.name);
 }
 function cardClick(elcard) {
-
 	let index = 0;
 	let cardToRemove = {
 		value: Number(elcard.dataset.rank),
@@ -101,25 +113,23 @@ function cardClick(elcard) {
 			game.player.deck.splice(index, 1);
 			game.trashStack.push(cardToRemove);
 			game.kupa_card = game.trashStack[game.trashStack.length - 1];
-			CheckWin(game.player);
+			if (CheckWin(game.player)) {
+				return;
+			}
+
 			game.player.isTurn = false;
 			game.pc.isTurn = true;
 			setTimeout(() => {
-				// drawCardFromPile();
-				// findMinCollectionSigns(game.pc);
-				// renderBoard();
 				pcBot();
 				console.log('Delayed for 2 second.');
 			}, 2000);
 		}
 	}
 	renderBoard();
-
 }
-function removeCard(player,index) {
+function removeCard(player, index) {
 	if (index !== -1) {
 		game.pc.deck.splice(index, 1);
-		// console.log(weekCards[indexToRemove]);
 		game.pc.collections[cardToRemove.suit]--;
 		trashStack.push(weekCards[indexToRemove]);
 		kupa_card = trashStack[trashStack.length - 1];
@@ -147,7 +157,11 @@ function findMinCollectionSigns() {
 	let minCollectionSigns = [];
 	let weekCards = [];
 	for (const suit in game.pc.collections) {
-		if (game.pc.collections[suit] < minCollection && game.pc.collections[suit] !== 0) {
+		if (
+			game.pc.collections[suit] < minCollection &&
+			game.pc.collections[suit] !== 0 &&
+			(suit !== 'red') & (suit !== 'black')
+		) {
 			minCollection = game.pc.collections[suit];
 			minCollectionSigns = [suit];
 		} else if (
@@ -157,16 +171,18 @@ function findMinCollectionSigns() {
 			minCollectionSigns.push(suit);
 		}
 	}
+	console.log(minCollectionSigns);
 	// find temp array of week cards that are optional to drop
 	for (const card of game.pc.deck) {
 		for (let suit of minCollectionSigns) {
-			if (card.suit == suit &&card.value!==0) 
-			weekCards.push(card);
+			if (card.suit == suit && card.value !== 0) weekCards.push(card);
 		}
 	}
 	// random card from the week cards array
 	let indexToRemove = Math.floor(Math.random() * weekCards.length);
+	console.log(weekCards);
 	let cardToRemove = weekCards[indexToRemove];
+
 	index = game.pc.deck.findIndex(
 		(i) => i.value === cardToRemove.value && i.suit === cardToRemove.suit
 	);
@@ -186,11 +202,11 @@ function pcBot() {
 	let MaxSuit = findMaxCollectionSigns(game.pc.collections);
 	console.log(MaxSuit);
 	for (let item of MaxSuit) {
-		if (item === game.kupa_card.suit||0 ===game.kupa_card.value) {
+		if (item === game.kupa_card.suit || 0 === game.kupa_card.value) {
 			console.log('same sign draw');
 			game.pc.collections[item]++;
 			console.log(game.pc.collections);
-			drawCardFromPile();;
+			drawCardFromPile();
 		}
 	}
 	drawCardpc();
@@ -198,7 +214,7 @@ function pcBot() {
 	setTimeout(() => {
 		// drawCardFromPile();
 		findMinCollectionSigns();
-		
+
 		console.log('Delayed for 2 second.');
 	}, 2000);
 }
@@ -242,7 +258,7 @@ function drawCardFromPile() {
 }
 function drawKupa() {
 	if (game.trashStack.length === 0) {
-		console.log("empty kupa");
+		console.log('empty kupa');
 		game.kupa_card = game.deck.pop();
 	} else {
 		game.kupa_card = game.trashStack.pop();
@@ -252,19 +268,24 @@ function drawKupa() {
 	}
 	renderBoard();
 }
-//TODO add joker 
+//TODO add joker
 function CheckWin(player) {
-	let currSign = player.deck[12].suit;
-	let jokers=0;
+	console.log(player);
+	let currSign = player.deck[10].suit;
+	let jokers = 0;
 	for (let i = 0; i < 13; i++) {
 		if (0 === player.deck[i].value) {
 			jokers++;
 		}
 	}
 	console.log(jokers);
-	// console.log(currSign);
-	let i=jokers;
-	for (i ; i < 13; i++) {
+	console.log(currSign);
+	let i = jokers;
+	for (i; i < 13; i++) {
+		if (player.deck[i].value == 0) {
+			
+			continue;
+		}
 		if (currSign != player.deck[i].suit) {
 			return false;
 		}
@@ -278,19 +299,22 @@ function startGame() {
 	document.querySelector('.login').style.visibility = 'hidden';
 	document.querySelector('.container').style.visibility = 'visible';
 	loadGame(game.player.name);
-	
+	// modal.style.display = "block";
 	renderBoard();
 }
 function winGame(player) {
 	console.log(game.player.name);
 	localStorage.removeItem(game.player.name);
-	document.getElementById('name').value = '';
+	// document.getElementById('name').value = '';
 	document.querySelector('.container').style.visibility = 'hidden';
-	document.querySelector('.label').innerHTML ='Congrats ' + player.name + ' You win!';
+	document.querySelector('.label').innerHTML =
+		'Congrats ' +
+		player.name +
+		' You win!' +
+		'<br>if you wish to start a new game <br> say your name and click the button';
 	document.querySelector('.btn').innerHTML = 'Restart';
 	document.querySelector('.login').style.visibility = 'visible';
 }
-
 
 function saveToStorage(key, val) {
 	localStorage.setItem(key, JSON.stringify(val));
@@ -311,7 +335,7 @@ function loadGame(name) {
 		game.player.isTurn = true;
 		game.pc.isTurn = false;
 		for (const suit in game.pc.collections) {
-			game.pc.collections[suit]=0;
+			game.pc.collections[suit] = 0;
 		}
 		// console.log(game.pc.collections);
 		for (let suit of suits) {
@@ -319,17 +343,18 @@ function loadGame(name) {
 				game.deck.push({ value, suit });
 			}
 		}
-		game.deck.push({ value: 0, suit: 'red' });
 		game.deck.push({ value: 0, suit: 'black' });
+		game.deck.push({ value: 0, suit: 'ared' });
 		shuffle(game.deck);
 		game.kupa_card = game.deck.pop();
 		game.trashStack.push(game.kupa_card);
+		MessageBox("Hello "+game.player.name+" Welcome Lets play!");
 		dealCards();
-	}
-	else{
-		console.log("alredy saved");
-		game=savedGame;
-		if(game.pc.isTurn){
+	} else {
+		console.log('alredy saved');
+		MessageBox("Hello "+game.player.name+" Good to see you again");
+		game = savedGame;
+		if (game.pc.isTurn) {
 			pcBot();
 		}
 	}
@@ -337,16 +362,36 @@ function loadGame(name) {
 function saveGame(player) {
 	saveToStorage(player, game);
 }
-function reset(){
+function reset() {
 	// console.log(game.player.name);
 	localStorage.removeItem(game.player.name);
 	loadGame(game.player.name);
 	renderBoard();
 }
-// function undo(){
-// 	console.log(history);
-// 	console.log("undoo");
-// 	game=history.pop();
-// 	console.log(game);
-// 	renderBoard();
-// }
+
+var modal = document.getElementById("myModal");
+
+// Get the button that opens the modal
+var p = document.getElementById("myBtn");
+
+// Get the <span> element that closes the modal
+var span = document.getElementsByClassName("close")[0];
+
+
+// When the user clicks on <span> (x), close the modal
+span.onclick = function() {
+  modal.style.display = "none";
+}
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
+}
+function MessageBox(text){
+	var p = document.querySelector(".p-modal");
+	p.innerText=text;
+	modal.style.display = "block";
+
+}

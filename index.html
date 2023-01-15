@@ -11,20 +11,33 @@
 
 <body>
 	<div class="login">
-		<h2 class="label">Welcome To The Cards Game 🃏 <br> please enter you name</h2>
+		<h2 class="label">Welcome To The Cards Game 🃏 <br> Please enter you name</h2>
+		<p>to enter saved game enter the name of the saved game</p>
 		<input type="text" name="" class="css-input" id="name">
 		<button class="btn" onclick="startGame()">Let's Play</button>
+
+		<!-- <button>resume game</button>
+		<button>clear game</button> -->
 	</div>
 	<div class="container" visabilit>
-		<div class="player deck"></div>
+		<div class="pc deck"></div>
 		<div class="kupa">
 			<div onclick="drawCard()" class="drawCard"></div>
 			<h2 class="turn"></h2>
 			<button class="reset" onclick="reset()">reset</button>
 			<div class=" kupa_card"></div>
 		</div>
-		<div class="pc deck"></div>
+		<div class="player deck"></div>
 	</div>
+	<div id="myModal" class="modal">
+
+		<!-- Modal content -->
+		<div class="modal-content">
+		  <span class="close">&times;</span>
+		  <p class="p-modal">Some text in the Modal..</p>
+		</div>
+	  
+	  </div>
 </body>
 <script src="./js/utils.js"></script>
 <script src="./js/game.js"></script>
